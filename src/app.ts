@@ -1,16 +1,29 @@
 import express, { Request, Response } from "express";
 import request from "request";
+const cors = require("cors");
 const qs = require("querystring");
 require("dotenv").config();
 
 const app = express();
 const port = 3000;
 
+const whitelist = ["http://localhost:6927"];
+const corsOptions = {
+  origin: function (origin: any, callback: any) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
 const host = "https://openapi.naver.com";
 const clientId = process.env.NAVER_CLIENT_ID || "";
 const clientSecret = process.env.NAVER_CLIENT_SECRET || "";
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", cors(corsOptions), (req: Request, res: Response) => {
   const {
     query = "",
     display = "10",
