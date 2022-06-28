@@ -19,7 +19,7 @@ const corsOptions = {
   credentials: true,
 };
 
-const host = "https://openapi.naver.com";
+const endpoint = "https://openapi.naver.com/v1/search/local.json";
 const clientId = process.env.NAVER_CLIENT_ID || "";
 const clientSecret = process.env.NAVER_CLIENT_SECRET || "";
 
@@ -31,7 +31,7 @@ app.get("/", cors(corsOptions), (req: Request, res: Response) => {
     sort = "random",
   } = req.query;
   const encodedQuery = qs.escape(query);
-  const url = `${host}/v1/search/local.json?query=${encodedQuery}&display=${display}&start=${start}&sort=${sort}`;
+  const url = `${endpoint}?query=${encodedQuery}&display=${display}&start=${start}&sort=${sort}`;
   const options: request.Options = {
     url,
     headers: {
